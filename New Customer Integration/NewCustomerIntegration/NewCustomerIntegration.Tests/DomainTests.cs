@@ -15,10 +15,10 @@ namespace NewCustomerIntegration.DomainTests
         public void SaveNewOrganization()
         {
 
-            //Arrange
+
             using (var db = new DBIntegrationContext())
             {
-
+                //Arrange
                 var newOrg = new Organization();
 
                 newOrg.OrganizationCode = "RWF";
@@ -69,11 +69,9 @@ namespace NewCustomerIntegration.DomainTests
         public void SaveNewAddress()
         {
 
-            //Arrange
-
             using (var db = new DBIntegrationContext())
             {
-
+                //Arrange
                 var newAdd = new Address();
 
                 newAdd.SiteId = 101;
@@ -122,9 +120,10 @@ namespace NewCustomerIntegration.DomainTests
         public void SaveNewSiteInfo()
         {
 
-            //Arrange
+            
             using (var db = new DBIntegrationContext())
             {
+                //Arrange
                 var newSite = new Site();
 
                 newSite.OrganizationId = 1234;
@@ -164,10 +163,10 @@ namespace NewCustomerIntegration.DomainTests
         public void SaveNewPerson()
         {
 
-            //Arrange
+            
             using (var db = new DBIntegrationContext())
             {
-            
+                //Arrange
                 var newUser = new Person();
 
                 newUser.OrganizationId = 1234;
@@ -212,11 +211,12 @@ namespace NewCustomerIntegration.DomainTests
         }
 
         [TestMethod]
-        public void CheckSiteType()
+        public void SaveNewSiteType()
         {
-            //Arrange
+            
             using (var db = new DBIntegrationContext())
             {
+                //Arrange
                 var newSiteType = new SiteType();
 
                 newSiteType.SiteTypeName = "Restaurant";
@@ -245,11 +245,12 @@ namespace NewCustomerIntegration.DomainTests
         }
 
         [TestMethod]
-        public void CheckUserType()
+        public void SaveNewUserType()
         { 
-            //Arrange
+            
             using (var db = new DBIntegrationContext())
             {
+                //Arrange
                 var newUserType = new UserType();
 
                 newUserType.UserTypeName = "User Name";
@@ -278,11 +279,12 @@ namespace NewCustomerIntegration.DomainTests
         }
 
         [TestMethod]
-        public void CheckRules()
+        public void SaveNewRules()
         {
-            //Arrange
+            
             using (var db = new DBIntegrationContext())
             {
+                //Arrange
                 var newRule = new NewCustomerIntegration.Domain.Models.Rule();
 
                 newRule.ValueTypeId = 16;
@@ -314,5 +316,236 @@ namespace NewCustomerIntegration.DomainTests
             }
         }
 
+        [TestMethod]
+        public void CheckNewPerson()
+        {
+            
+            using (var db = new DBIntegrationContext())
+            { 
+                //Arrange
+                var existingOrg = new Organization();
+
+                existingOrg.OrganizationCode = "RWF";
+                existingOrg.OrganizationName = "RealWorld Diners";
+                existingOrg.PhoneNumber = "208-555-1234";
+                existingOrg.FaxNumber = "208-555-3421";
+                existingOrg.ParentOrganizationCode = "4321";
+                existingOrg.Theme = "Standard";
+                existingOrg.Skin = "Red";
+                existingOrg.Active = true;
+                existingOrg.DELETED = false;
+                existingOrg.CreatedDateTime = new DateTime();
+                existingOrg.CreatedBy = "Administrator";
+                existingOrg.ModifiedDateTime = new DateTime();
+                existingOrg.ModifiedBy = "Administrator";
+                db.Organizations.Add(existingOrg);
+
+                var existingUserType = new UserType();
+                existingUserType.UserTypeId = 12;
+                existingUserType.UserTypeName = "User Name";
+                existingUserType.CreatedDateTime = new DateTime();
+                existingUserType.CreatedBy = "Administrator";
+                existingUserType.ModifiedDateTime = new DateTime();
+                existingUserType.ModifiedBy = "Administrator";
+                db.UserTypes.Add(existingUserType);
+
+                db.SaveChanges(); // must write as db is empty or it doesn't commit
+
+                var newUser = new Person();
+                newUser.OrganizationId = existingOrg.OrganizationId;
+                newUser.UserTypeId = 12;
+                newUser.FirstName = "Fred";
+                newUser.LastName = "Jones";
+                newUser.PhoneNumber = existingOrg.PhoneNumber;
+                newUser.EmailAddress = "fjones@itradenetwork.com";
+                newUser.UnitName = "RealIdaho";
+                newUser.UnitNumber = "4301";
+                newUser.Department = "Fast Food";
+                newUser.CreatedDateTime = new DateTime();
+                newUser.CreatedBy = "Administrator";
+                newUser.ModifiedDateTime = new DateTime();
+                newUser.ModifiedBy = "Administrator";
+                db.People.Add(newUser);
+
+                //Act
+                db.SaveChanges();
+
+                //Assert -- validate new user information contains user type, company and phone
+                //          make sure appropriate fields are not null
+                //          make sure Organization is active
+
+                Assert.AreEqual(existingOrg.DELETED, false);
+                Assert.AreEqual(newUser.OrganizationId, existingOrg.OrganizationId);
+                Assert.AreEqual(newUser.PhoneNumber, existingOrg.PhoneNumber);
+                Assert.AreEqual(newUser.UserTypeId, existingUserType.UserTypeId);
+                Assert.AreNotEqual(newUser.UserTypeId, null);
+                Assert.AreNotEqual(newUser.FirstName, null);
+                Assert.AreNotEqual(newUser.LastName, null);
+                Assert.AreNotEqual(newUser.CreatedDateTime, null);
+                Assert.AreNotEqual(newUser.CreatedBy, null);
+
+
+                //Cleanup
+                db.People.Remove(newUser);
+                db.Organizations.Remove(existingOrg);
+                db.UserTypes.Remove(existingUserType);
+                db.SaveChanges();
+
+            }
+
+        }
+
+        [TestMethod]
+        public void CheckNewOrganization()
+        {
+            
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+                var existingOrg = new Organization();
+
+                existingOrg.OrganizationCode = "RWF";
+                existingOrg.OrganizationName = "RealWorld Diners";
+                existingOrg.PhoneNumber = "208-555-1234";
+                existingOrg.FaxNumber = "208-555-3421";
+                existingOrg.ParentOrganizationCode = "4321";
+                existingOrg.Theme = "Custom";
+                existingOrg.Skin = "Green";
+                existingOrg.Active = true;
+                existingOrg.DELETED = false;
+                existingOrg.CreatedDateTime = new DateTime();
+                existingOrg.CreatedBy = "Administrator";
+                existingOrg.ModifiedDateTime = new DateTime();
+                existingOrg.ModifiedBy = "Administrator";
+                db.Organizations.Add(existingOrg);
+                
+                var newOrg = new Organization();
+
+                newOrg.OrganizationCode = "BFW";
+                newOrg.OrganizationName = "Big Food Warehouse";
+                newOrg.PhoneNumber = "208-555-9658";
+                newOrg.FaxNumber = "208-555-9657";
+                newOrg.ParentOrganizationCode = "3658";
+                newOrg.Theme = "Standard";
+                newOrg.Skin = "Red";
+                newOrg.Active = true;
+                newOrg.DELETED = false;
+                newOrg.CreatedDateTime = new DateTime();
+                newOrg.CreatedBy = "Administrator";
+                newOrg.ModifiedDateTime = new DateTime();
+                newOrg.ModifiedBy = "Administrator";
+                db.Organizations.Add(newOrg);
+
+                //Act
+                db.SaveChanges();
+
+                //Assert  - Make sure new org name and ID do not match existing org 
+
+                Assert.AreNotEqual(newOrg.OrganizationId, existingOrg.OrganizationId);
+                Assert.AreNotEqual(newOrg.OrganizationName, existingOrg.OrganizationName);
+                Assert.AreNotEqual(newOrg.PhoneNumber, existingOrg.PhoneNumber);
+                Assert.AreNotEqual(newOrg.FaxNumber, existingOrg.FaxNumber);
+                Assert.AreNotEqual(newOrg.ParentOrganizationCode, existingOrg.ParentOrganizationCode);
+
+
+                //Cleanup
+                db.Organizations.Remove(newOrg);
+                db.Organizations.Remove(existingOrg);
+                db.SaveChanges();
+
+            }
+        }
+
+        [TestMethod]
+        public void CheckNewSite()
+        {
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+
+                var existingSite = new Site();
+
+                existingSite.OrganizationId = 1234;
+                existingSite.SiteTypeId = 7;
+                existingSite.SiteName = "Little Island";
+                existingSite.SiteCode = "RWF001";
+                existingSite.TimeZoneId = 8;
+                existingSite.CreatedDateTime = new DateTime();
+                existingSite.CreatedBy = "Adminstrator";
+                existingSite.ModifiedDateTime = new DateTime();
+                existingSite.ModifiedBy = "Administrator";
+                db.Sites.Add(existingSite);
+
+                var existingSiteType = new SiteType();
+
+                existingSiteType.SiteTypeId = 7;
+                existingSiteType.SiteTypeName = "Restaurant";
+                existingSiteType.CreatedDateTime = new DateTime();
+                existingSiteType.CreatedBy = "Administrator";
+                existingSiteType.ModifiedDateTime = new DateTime();
+                existingSiteType.ModifiedBy = "Administrator";
+                db.SiteTypes.Add(existingSiteType);
+
+                var newSite = new Site();
+
+                newSite.OrganizationId = 4231;
+                newSite.SiteTypeId = 1;
+                newSite.SiteName = "Big Island";
+                newSite.SiteCode = "BFW001";
+                newSite.TimeZoneId = 7;
+                newSite.CreatedDateTime = new DateTime();
+                newSite.CreatedBy = "Adminstrator";
+                newSite.ModifiedDateTime = new DateTime();
+                newSite.ModifiedBy = "Administrator";
+                db.Sites.Add(newSite);
+
+                var newSiteType = new SiteType();
+
+                newSite.SiteTypeId = 1;
+                newSiteType.SiteTypeName = "Warehouse";
+                newSiteType.CreatedDateTime = new DateTime();
+                newSiteType.CreatedBy = "Administrator";
+                newSiteType.ModifiedDateTime = new DateTime();
+                newSiteType.ModifiedBy = "Administrator";
+                db.SiteTypes.Add(newSiteType);
+
+                //Act
+                db.SaveChanges();
+
+                //Assert -- verify new site doesn't match existing site
+
+                if (newSite.OrganizationId != existingSite.OrganizationId)
+                {
+                    Assert.AreNotEqual(newSite.SiteName, existingSite.SiteName);
+                    Assert.AreNotEqual(newSite.SiteCode, existingSite.SiteCode);
+                    Assert.AreNotEqual(newSite.SiteId, existingSite.SiteId);
+                }
+                else
+                {
+                    if (newSite.SiteTypeId == existingSite.SiteTypeId)
+                    {
+                        Assert.AreNotEqual(newSite.SiteName, existingSite.SiteName);
+                        Assert.AreNotEqual(newSite.SiteId, existingSite.SiteId);
+                        Assert.AreNotEqual(newSite.SiteCode, existingSite.SiteCode);
+                    }
+                    else
+                    {
+                        Assert.AreNotEqual(newSite.SiteId, existingSite.SiteId);
+                        Assert.AreNotEqual(newSite.SiteCode, existingSite.SiteCode);
+                        Assert.AreNotEqual(newSite.SiteName, existingSite.SiteName);
+                    }
+                }
+
+                //Cleanup
+                db.Sites.Remove(existingSite);
+                db.Sites.Remove(newSite);
+                db.SiteTypes.Remove(existingSiteType);
+                db.SiteTypes.Remove(newSiteType);
+                db.SaveChanges();
+
+            }
+
+        }
+    
     }
 }
