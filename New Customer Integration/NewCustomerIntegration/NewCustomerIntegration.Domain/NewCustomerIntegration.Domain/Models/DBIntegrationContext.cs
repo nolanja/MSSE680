@@ -19,6 +19,7 @@ namespace NewCustomerIntegration.Domain.Models
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Person> People { get; set; }
+        public DbSet<Rule> Rules { get; set; }
         public DbSet<Site> Sites { get; set; }
         public DbSet<SiteType> SiteTypes { get; set; }
         public DbSet<sysdiagram> sysdiagrams { get; set; }
@@ -29,6 +30,7 @@ namespace NewCustomerIntegration.Domain.Models
             modelBuilder.Configurations.Add(new AddressMap());
             modelBuilder.Configurations.Add(new OrganizationMap());
             modelBuilder.Configurations.Add(new PersonMap());
+            modelBuilder.Configurations.Add(new RuleMap());
             modelBuilder.Configurations.Add(new SiteMap());
             modelBuilder.Configurations.Add(new SiteTypeMap());
             modelBuilder.Configurations.Add(new sysdiagramMap());

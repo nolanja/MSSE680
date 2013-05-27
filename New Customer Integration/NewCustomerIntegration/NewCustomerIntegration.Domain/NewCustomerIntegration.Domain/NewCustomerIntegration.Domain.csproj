@@ -126,12 +126,14 @@
     <Compile Include="Models\Mapping\AddressMap.cs" />
     <Compile Include="Models\Mapping\OrganizationMap.cs" />
     <Compile Include="Models\Mapping\PersonMap.cs" />
+    <Compile Include="Models\Mapping\RuleMap.cs" />
     <Compile Include="Models\Mapping\SiteMap.cs" />
     <Compile Include="Models\Mapping\SiteTypeMap.cs" />
     <Compile Include="Models\Mapping\sysdiagramMap.cs" />
     <Compile Include="Models\Mapping\UserTypeMap.cs" />
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Rule.cs" />
     <Compile Include="Models\Site.cs" />
     <Compile Include="Models\SiteType.cs" />
     <Compile Include="Models\sysdiagram.cs" />
