@@ -185,7 +185,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BusinessLayer\Business.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ServiceLayer\Service.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -196,17 +198,20 @@
     <Compile Include="Models\Mapping\AddressMap.cs" />
     <Compile Include="Models\Mapping\OrganizationMap.cs" />
     <Compile Include="Models\Mapping\PersonMap.cs" />
+    <Compile Include="Models\Mapping\RuleMap.cs" />
     <Compile Include="Models\Mapping\SiteMap.cs" />
     <Compile Include="Models\Mapping\SiteTypeMap.cs" />
     <Compile Include="Models\Mapping\sysdiagramMap.cs" />
     <Compile Include="Models\Mapping\UserTypeMap.cs" />
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Rule.cs" />
     <Compile Include="Models\Site.cs" />
     <Compile Include="Models\SiteType.cs" />
     <Compile Include="Models\sysdiagram.cs" />
     <Compile Include="Models\UserType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\PresentationLayer\Presentation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\animated-overlay.gif" />

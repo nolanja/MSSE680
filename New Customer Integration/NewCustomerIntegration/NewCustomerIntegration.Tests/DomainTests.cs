@@ -285,7 +285,7 @@ namespace NewCustomerIntegration.DomainTests
             using (var db = new DBIntegrationContext())
             {
                 //Arrange
-                var newRule = new NewCustomerIntegration.Domain.Models.Rule();
+                var newRule = new NewCustomerIntegration.Domain.Models.Rule(); // have to use full qualification as System has Rule
 
                 newRule.ValueTypeId = 16;
                 newRule.RuleName = "Substitution";
@@ -418,7 +418,24 @@ namespace NewCustomerIntegration.DomainTests
                 existingOrg.ModifiedDateTime = new DateTime();
                 existingOrg.ModifiedBy = "Administrator";
                 db.Organizations.Add(existingOrg);
-                
+
+                var existingAdd = new Address();
+
+                existingAdd.SiteId = 101;
+                existingAdd.AddressTypeId = 5;
+                existingAdd.AddressLine1 = "RealWorld Food";
+                existingAdd.AddressLine2 = "101 Maple Str";
+                existingAdd.AddressLine3 = "Suite 150";
+                existingAdd.City = "Meridian";
+                existingAdd.StateProvinceRegionId = 43;
+                existingAdd.PostalCode = "83642";
+                existingAdd.CountryRegionId = 01;
+                existingAdd.CreatedDateTime = new DateTime();
+                existingAdd.CreatedBy = "Administrator";
+                existingAdd.ModifiedDateTime = new DateTime();
+                existingAdd.ModifiedBy = "Administrator";
+                db.Addresses.Add(existingAdd);
+
                 var newOrg = new Organization();
 
                 newOrg.OrganizationCode = "BFW";
@@ -436,21 +453,43 @@ namespace NewCustomerIntegration.DomainTests
                 newOrg.ModifiedBy = "Administrator";
                 db.Organizations.Add(newOrg);
 
+                var newAdd = new Address();
+
+                newAdd.SiteId = 542;
+                newAdd.AddressTypeId = 4;
+                newAdd.AddressLine1 = "BFW Food";
+                newAdd.AddressLine2 = "100 Transit Street";
+                newAdd.AddressLine3 = "Suite 25";
+                newAdd.City = "Indianapolis";
+                newAdd.StateProvinceRegionId = 19;
+                newAdd.PostalCode = "46201";
+                newAdd.CountryRegionId = 01;
+                newAdd.CreatedDateTime = new DateTime();
+                newAdd.CreatedBy = "Administrator";
+                newAdd.ModifiedDateTime = new DateTime();
+                newAdd.ModifiedBy = "Administrator";
+                db.Addresses.Add(newAdd);
+
                 //Act
                 db.SaveChanges();
 
-                //Assert  - Make sure new org name and ID do not match existing org 
+                //Assert  - Make sure new org name, address and ID do not match existing org 
 
-                Assert.AreNotEqual(newOrg.OrganizationId, existingOrg.OrganizationId);
-                Assert.AreNotEqual(newOrg.OrganizationName, existingOrg.OrganizationName);
-                Assert.AreNotEqual(newOrg.PhoneNumber, existingOrg.PhoneNumber);
-                Assert.AreNotEqual(newOrg.FaxNumber, existingOrg.FaxNumber);
-                Assert.AreNotEqual(newOrg.ParentOrganizationCode, existingOrg.ParentOrganizationCode);
-
+                if (existingOrg.OrganizationId != newOrg.OrganizationId)
+                { 
+                    Assert.AreNotEqual(newOrg.OrganizationName, existingOrg.OrganizationName);
+                    Assert.AreNotEqual(newAdd.AddressId, existingAdd.AddressId);
+                    Assert.AreNotEqual(newOrg.PhoneNumber, existingOrg.PhoneNumber);
+                    Assert.AreNotEqual(newOrg.FaxNumber, existingOrg.FaxNumber);
+                    Assert.AreNotEqual(newOrg.ParentOrganizationCode, existingOrg.ParentOrganizationCode);
+                    Assert.AreNotEqual(newAdd.AddressLine1, existingAdd.AddressLine1);
+                }
 
                 //Cleanup
                 db.Organizations.Remove(newOrg);
                 db.Organizations.Remove(existingOrg);
+                db.Addresses.Remove(newAdd);
+                db.Addresses.Remove(existingAdd);
                 db.SaveChanges();
 
             }
@@ -544,8 +583,187 @@ namespace NewCustomerIntegration.DomainTests
                 db.SaveChanges();
 
             }
+        }
+
+        [TestMethod]
+        public void CheckNewRules()
+        {
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+                var existingRule = new NewCustomerIntegration.Domain.Models.Rule();  //have to use full qualification as system has rules
+                
+                existingRule.RuleId = 4;
+                existingRule.ValueTypeId = 16;
+                existingRule.RuleName = "Substitution";
+                existingRule.RuleDescription = "Substitute out of stock item with closest like item";
+                existingRule.CreatedDateTime = new DateTime();
+                existingRule.CreatedBy = "Administrator";
+                existingRule.ModifiedDateTime = new DateTime();
+                existingRule.ModifiedBy = "Administrator";
+                db.Rules.Add(existingRule);
+
+                var newRule = new NewCustomerIntegration.Domain.Models.Rule();
+
+                newRule.RuleId = 7;
+                newRule.ValueTypeId = 17;
+                newRule.RuleName = "Sunday Delivery";
+                newRule.RuleDescription = "Deliver on Sunday is O.K.";
+                newRule.CreatedDateTime = new DateTime();
+                newRule.CreatedBy = "Administrator";
+                newRule.ModifiedDateTime = new DateTime();
+                newRule.ModifiedBy = "Administrator";
+                db.Rules.Add(newRule);
+
+                //Act
+                db.SaveChanges();
+
+                //Assert -- make sure new rule doesn't conflict with existing rule
+                Assert.AreNotEqual(existingRule.ValueTypeId, newRule.ValueTypeId);
+                Assert.AreNotEqual(existingRule.RuleName, newRule.RuleName);
+
+                //Cleanup
+                db.Rules.Remove(existingRule);
+                db.Rules.Remove(newRule);
+                db.SaveChanges();
+            }
 
         }
-    
+
+    // Clean by Columns
+        [TestMethod]
+        public void DeleteOrganizationContent() 
+        {
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+                    var query = from d in db.Organizations
+                                orderby d.OrganizationId
+                                select d;
+                    foreach (var item in query)
+                    {
+                        db.Organizations.Remove(item);
+                    }
+                
+                //Act
+                db.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        public void DeletePersonContent()
+        {
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+                var query = from d in db.People
+                            orderby d.UserId
+                            select d;
+                foreach (var item in query)
+                {
+                    db.People.Remove(item);
+                }
+
+                //Act
+                db.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        public void DeleteAddressContent()
+        {
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+                var query = from d in db.Addresses
+                            orderby d.AddressId
+                            select d;
+                foreach (var item in query)
+                {
+                    db.Addresses.Remove(item);
+                }
+
+                //Act
+                db.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        public void DeleteSiteContent()
+        {
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+                var query = from d in db.Sites
+                            orderby d.SiteId
+                            select d;
+
+                foreach (var item in query)
+                {
+                    db.Sites.Remove(item);
+                }
+
+                //Act
+                db.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        public void DeleteUserTypeContent()
+        {
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+                var query = from d in db.UserTypes
+                            orderby d.UserTypeId
+                            select d;
+
+                foreach (var item in query)
+                {
+                    db.UserTypes.Remove(item);
+                }
+
+                //Act
+                db.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        public void DeleteSiteTypeContent()
+        {
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+                var query = from d in db.SiteTypes
+                            orderby d.SiteTypeId
+                            select d;
+                foreach (var item in query)
+                {
+                    db.SiteTypes.Remove(item);
+                }
+
+                //Act
+                db.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        public void DeleteRuleContent()
+        {
+            using (var db = new DBIntegrationContext())
+            {
+                //Arrange
+                var query = from d in db.Rules
+                            orderby d.RuleId
+                            select d;
+                foreach (var item in query)
+                {
+                    db.Rules.Remove(item);
+                }
+
+                //Act
+                db.SaveChanges();
+            }
+        }
     }
 }
