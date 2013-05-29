@@ -167,10 +167,37 @@ namespace NewCustomerIntegration.DomainTests
             using (var db = new DBIntegrationContext())
             {
                 //Arrange
+
+                var newOrg = new Organization();
+
+                newOrg.OrganizationCode = "RWF";
+                newOrg.OrganizationName = "RealWorld Diners";
+                newOrg.PhoneNumber = "208-555-1234";
+                newOrg.FaxNumber = "208-555-3421";
+                newOrg.ParentOrganizationCode = "4321";
+                newOrg.Theme = "Standard";
+                newOrg.Skin = "Red";
+                newOrg.Active = true;
+                newOrg.DELETED = false;
+                newOrg.CreatedDateTime = new DateTime();
+                newOrg.CreatedBy = "Administrator";
+                newOrg.ModifiedDateTime = new DateTime();
+                newOrg.ModifiedBy = "Administrator";
+                db.Organizations.Add(newOrg);
+
+                var newUserType = new UserType();
+
+                newUserType.UserTypeName = "User Name";
+                newUserType.CreatedDateTime = new DateTime();
+                newUserType.CreatedBy = "Administrator";
+                newUserType.ModifiedDateTime = new DateTime();
+                newUserType.ModifiedBy = "Administrator";
+                db.UserTypes.Add(newUserType);
+
                 var newUser = new Person();
 
-                newUser.OrganizationId = 1234;
-                newUser.UserTypeId = 12;
+                newUser.OrganizationId = newOrg.OrganizationId;
+                newUser.UserTypeId = newUserType.UserTypeId;
                 newUser.FirstName = "Fred";
                 newUser.LastName = "Jones";
                 newUser.PhoneNumber = "208-555=-234";
@@ -183,6 +210,7 @@ namespace NewCustomerIntegration.DomainTests
                 newUser.ModifiedDateTime = new DateTime();
                 newUser.ModifiedBy = "Administrator";
                 db.People.Add(newUser);
+
 
                 //Act
                 db.SaveChanges();
@@ -341,6 +369,7 @@ namespace NewCustomerIntegration.DomainTests
                 db.Organizations.Add(existingOrg);
 
                 var existingUserType = new UserType();
+
                 existingUserType.UserTypeId = 12;
                 existingUserType.UserTypeName = "User Name";
                 existingUserType.CreatedDateTime = new DateTime();
@@ -404,6 +433,7 @@ namespace NewCustomerIntegration.DomainTests
                 //Arrange
                 var existingOrg = new Organization();
 
+                existingOrg.OrganizationId = 15;
                 existingOrg.OrganizationCode = "RWF";
                 existingOrg.OrganizationName = "RealWorld Diners";
                 existingOrg.PhoneNumber = "208-555-1234";
@@ -419,9 +449,34 @@ namespace NewCustomerIntegration.DomainTests
                 existingOrg.ModifiedBy = "Administrator";
                 db.Organizations.Add(existingOrg);
 
+                var existingSite = new Site();
+
+                existingSite.SiteId = 1;
+                existingSite.OrganizationId = existingOrg.OrganizationId;
+                existingSite.SiteTypeId = 7;
+                existingSite.SiteName = "Little Island";
+                existingSite.SiteCode = "RWF001";
+                existingSite.TimeZoneId = 8;
+                existingSite.CreatedDateTime = new DateTime();
+                existingSite.CreatedBy = "Adminstrator";
+                existingSite.ModifiedDateTime = new DateTime();
+                existingSite.ModifiedBy = "Administrator";
+                db.Sites.Add(existingSite);
+
+                var existingSiteType = new SiteType();
+
+                existingSiteType.SiteTypeId = 7;
+                existingSiteType.SiteTypeName = "Restaurant";
+                existingSiteType.CreatedDateTime = new DateTime();
+                existingSiteType.CreatedBy = "Administrator";
+                existingSiteType.ModifiedDateTime = new DateTime();
+                existingSiteType.ModifiedBy = "Administrator";
+                db.SiteTypes.Add(existingSiteType);
+
                 var existingAdd = new Address();
 
-                existingAdd.SiteId = 101;
+                existingAdd.AddressId = 0;
+                existingAdd.SiteId = existingSite.SiteId;
                 existingAdd.AddressTypeId = 5;
                 existingAdd.AddressLine1 = "RealWorld Food";
                 existingAdd.AddressLine2 = "101 Maple Str";
@@ -438,6 +493,7 @@ namespace NewCustomerIntegration.DomainTests
 
                 var newOrg = new Organization();
 
+                newOrg.OrganizationId = 25;
                 newOrg.OrganizationCode = "BFW";
                 newOrg.OrganizationName = "Big Food Warehouse";
                 newOrg.PhoneNumber = "208-555-9658";
@@ -453,9 +509,33 @@ namespace NewCustomerIntegration.DomainTests
                 newOrg.ModifiedBy = "Administrator";
                 db.Organizations.Add(newOrg);
 
+                var newSite = new Site();
+
+                var newSiteType = new SiteType();
+
+                newSite.SiteTypeId = 1;
+                newSiteType.SiteTypeName = "Warehouse";
+                newSiteType.CreatedDateTime = new DateTime();
+                newSiteType.CreatedBy = "Administrator";
+                newSiteType.ModifiedDateTime = new DateTime();
+                newSiteType.ModifiedBy = "Administrator";
+                db.SiteTypes.Add(newSiteType);
+
+                newSite.SiteId = 2;
+                newSite.OrganizationId = newOrg.OrganizationId;
+                newSite.SiteTypeId = newSiteType.SiteTypeId;
+                newSite.SiteName = "Big Island";
+                newSite.SiteCode = "BFW001";
+                newSite.TimeZoneId = 7;
+                newSite.CreatedDateTime = new DateTime();
+                newSite.CreatedBy = "Adminstrator";
+                newSite.ModifiedDateTime = new DateTime();
+                newSite.ModifiedBy = "Administrator";
+                db.Sites.Add(newSite);
                 var newAdd = new Address();
 
-                newAdd.SiteId = 542;
+                newAdd.AddressId = 1;
+                newAdd.SiteId = newSite.SiteId;
                 newAdd.AddressTypeId = 4;
                 newAdd.AddressLine1 = "BFW Food";
                 newAdd.AddressLine2 = "100 Transit Street";
@@ -469,6 +549,7 @@ namespace NewCustomerIntegration.DomainTests
                 newAdd.ModifiedDateTime = new DateTime();
                 newAdd.ModifiedBy = "Administrator";
                 db.Addresses.Add(newAdd);
+
 
                 //Act
                 db.SaveChanges();

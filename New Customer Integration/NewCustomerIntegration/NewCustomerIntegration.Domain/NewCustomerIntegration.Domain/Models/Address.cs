@@ -19,5 +19,6 @@ namespace NewCustomerIntegration.Domain.Models
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDateTime { get; set; }
         public string ModifiedBy { get; set; }
+        public virtual Site Site { get; set; }
     }
 }

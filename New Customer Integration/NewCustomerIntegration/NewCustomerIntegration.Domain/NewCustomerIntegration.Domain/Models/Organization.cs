@@ -5,6 +5,12 @@ namespace NewCustomerIntegration.Domain.Models
 {
     public partial class Organization
     {
+        public Organization()
+        {
+            this.People = new List<Person>();
+            this.Sites = new List<Site>();
+        }
+
         public long OrganizationId { get; set; }
         public string OrganizationCode { get; set; }
         public string OrganizationName { get; set; }
@@ -19,5 +25,7 @@ namespace NewCustomerIntegration.Domain.Models
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDateTime { get; set; }
         public string ModifiedBy { get; set; }
+        public virtual ICollection<Person> People { get; set; }
+        public virtual ICollection<Site> Sites { get; set; }
     }
 }

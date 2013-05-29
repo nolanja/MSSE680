@@ -37,6 +37,15 @@ namespace NewCustomerIntegration.Domain.Models.Mapping
             this.Property(t => t.CreatedBy).HasColumnName("CreatedBy");
             this.Property(t => t.ModifiedDateTime).HasColumnName("ModifiedDateTime");
             this.Property(t => t.ModifiedBy).HasColumnName("ModifiedBy");
+
+            // Relationships
+            this.HasRequired(t => t.Organization)
+                .WithMany(t => t.Sites)
+                .HasForeignKey(d => d.OrganizationId);
+            this.HasRequired(t => t.SiteType)
+                .WithMany(t => t.Sites)
+                .HasForeignKey(d => d.SiteTypeId);
+
         }
     }
 }
