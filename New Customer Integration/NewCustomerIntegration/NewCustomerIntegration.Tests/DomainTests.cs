@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace NewCustomerIntegration.DomainTests
 {
-    [TestClass]
+    [TestClass, System.Runtime.InteropServices.GuidAttribute("E832CAAD-4BFF-46CC-AB6D-73222A50D02C")]
     public class DomainUnitTests
     {
         [TestMethod]
@@ -72,9 +72,51 @@ namespace NewCustomerIntegration.DomainTests
             using (var db = new DBIntegrationContext())
             {
                 //Arrange
+
+                var existingSiteType = new SiteType();
+
+                existingSiteType.SiteTypeId = 7;
+                existingSiteType.SiteTypeName = "Restaurant";
+                existingSiteType.CreatedDateTime = new DateTime();
+                existingSiteType.CreatedBy = "Administrator";
+                existingSiteType.ModifiedDateTime = new DateTime();
+                existingSiteType.ModifiedBy = "Administrator";
+                db.SiteTypes.Add(existingSiteType);
+
+                var existingOrg = new Organization();
+
+                existingOrg.OrganizationCode = "RWF";
+                existingOrg.OrganizationName = "RealWorld Diners";
+                existingOrg.PhoneNumber = "208-555-1234";
+                existingOrg.FaxNumber = "208-555-3421";
+                existingOrg.ParentOrganizationCode = "4321";
+                existingOrg.Theme = "Standard";
+                existingOrg.Skin = "Red";
+                existingOrg.Active = true;
+                existingOrg.DELETED = false;
+                existingOrg.CreatedDateTime = new DateTime();
+                existingOrg.CreatedBy = "Administrator";
+                existingOrg.ModifiedDateTime = new DateTime();
+                existingOrg.ModifiedBy = "Administrator";
+                db.Organizations.Add(existingOrg);
+
+                var existingSite = new Site();
+
+                existingSite.SiteId = 1;
+                existingSite.OrganizationId = existingOrg.OrganizationId;
+                existingSite.SiteTypeId = existingSiteType.SiteTypeId;
+                existingSite.SiteName = "Little Island";
+                existingSite.SiteCode = "RWF001";
+                existingSite.TimeZoneId = 8;
+                existingSite.CreatedDateTime = new DateTime();
+                existingSite.CreatedBy = "Adminstrator";
+                existingSite.ModifiedDateTime = new DateTime();
+                existingSite.ModifiedBy = "Administrator";
+                db.Sites.Add(existingSite);
+
                 var newAdd = new Address();
 
-                newAdd.SiteId = 101;
+                newAdd.SiteId = existingSite.SiteId;
                 newAdd.AddressTypeId = 5;
                 newAdd.AddressLine1 = "RealWorld Food";
                 newAdd.AddressLine2 = "101 Maple Str";
@@ -112,6 +154,9 @@ namespace NewCustomerIntegration.DomainTests
 
                 //cleanup
                 db.Addresses.Remove(newAdd);
+                db.Sites.Remove(existingSite);
+                db.SiteTypes.Remove(existingSiteType);
+                db.Organizations.Remove(existingOrg);
                 db.SaveChanges();
             }
         }
@@ -124,10 +169,38 @@ namespace NewCustomerIntegration.DomainTests
             using (var db = new DBIntegrationContext())
             {
                 //Arrange
+
+                var existingSiteType = new SiteType();
+
+                existingSiteType.SiteTypeId = 7;
+                existingSiteType.SiteTypeName = "Restaurant";
+                existingSiteType.CreatedDateTime = new DateTime();
+                existingSiteType.CreatedBy = "Administrator";
+                existingSiteType.ModifiedDateTime = new DateTime();
+                existingSiteType.ModifiedBy = "Administrator";
+                db.SiteTypes.Add(existingSiteType);
+
+                var existingOrg = new Organization();
+
+                existingOrg.OrganizationCode = "RWF";
+                existingOrg.OrganizationName = "RealWorld Diners";
+                existingOrg.PhoneNumber = "208-555-1234";
+                existingOrg.FaxNumber = "208-555-3421";
+                existingOrg.ParentOrganizationCode = "4321";
+                existingOrg.Theme = "Standard";
+                existingOrg.Skin = "Red";
+                existingOrg.Active = true;
+                existingOrg.DELETED = false;
+                existingOrg.CreatedDateTime = new DateTime();
+                existingOrg.CreatedBy = "Administrator";
+                existingOrg.ModifiedDateTime = new DateTime();
+                existingOrg.ModifiedBy = "Administrator";
+                db.Organizations.Add(existingOrg);
+
                 var newSite = new Site();
 
-                newSite.OrganizationId = 1234;
-                newSite.SiteTypeId = 7;
+                newSite.OrganizationId = existingOrg.OrganizationId;
+                newSite.SiteTypeId = existingSiteType.SiteTypeId;
                 newSite.SiteName = "Little Island";
                 newSite.SiteCode = "RWF001";
                 newSite.TimeZoneId = 8;
@@ -155,6 +228,8 @@ namespace NewCustomerIntegration.DomainTests
 
                 //cleanup
                 db.Sites.Remove(newSite);
+                db.SiteTypes.Remove(existingSiteType);
+                db.Organizations.Remove(existingOrg);
                 db.SaveChanges();
             }
         }
@@ -233,6 +308,8 @@ namespace NewCustomerIntegration.DomainTests
 
                 //cleanup
                 db.People.Remove(newUser);
+                db.Organizations.Remove(newOrg);
+                db.UserTypes.Remove(newUserType);
                 db.SaveChanges();            
             }
 
@@ -279,8 +356,54 @@ namespace NewCustomerIntegration.DomainTests
             using (var db = new DBIntegrationContext())
             {
                 //Arrange
+
+                var existingUserType = new UserType();
+
+                existingUserType.UserTypeId = 12;
+                existingUserType.UserTypeName = "User Name";
+                existingUserType.CreatedDateTime = new DateTime();
+                existingUserType.CreatedBy = "Administrator";
+                existingUserType.ModifiedDateTime = new DateTime();
+                existingUserType.ModifiedBy = "Administrator";
+                db.UserTypes.Add(existingUserType);
+
+                var existingOrg = new Organization();
+
+                existingOrg.OrganizationCode = "RWF";
+                existingOrg.OrganizationName = "RealWorld Diners";
+                existingOrg.PhoneNumber = "208-555-1234";
+                existingOrg.FaxNumber = "208-555-3421";
+                existingOrg.ParentOrganizationCode = "4321";
+                existingOrg.Theme = "Standard";
+                existingOrg.Skin = "Red";
+                existingOrg.Active = true;
+                existingOrg.DELETED = false;
+                existingOrg.CreatedDateTime = new DateTime();
+                existingOrg.CreatedBy = "Administrator";
+                existingOrg.ModifiedDateTime = new DateTime();
+                existingOrg.ModifiedBy = "Administrator";
+                db.Organizations.Add(existingOrg);
+
+                var existingUser = new Person();
+
+                existingUser.OrganizationId = existingOrg.OrganizationId;
+                existingUser.UserTypeId = existingUserType.UserTypeId;
+                existingUser.FirstName = "Fred";
+                existingUser.LastName = "Jones";
+                existingUser.PhoneNumber = "208-555-1234";
+                existingUser.EmailAddress = "fjones@itradenetwork.com";
+                existingUser.UnitName = "RealIdaho";
+                existingUser.UnitNumber = "4301";
+                existingUser.Department = "Fast Food";
+                existingUser.CreatedDateTime = new DateTime();
+                existingUser.CreatedBy = "Administrator";
+                existingUser.ModifiedDateTime = new DateTime();
+                existingUser.ModifiedBy = "Administrator";
+                db.People.Add(existingUser);
+
                 var newUserType = new UserType();
 
+                newUserType.UserTypeId = 10;
                 newUserType.UserTypeName = "User Name";
                 newUserType.CreatedDateTime = new DateTime();
                 newUserType.CreatedBy = "Administrator";
@@ -302,6 +425,9 @@ namespace NewCustomerIntegration.DomainTests
 
                 //Cleanup
                 db.UserTypes.Remove(newUserType);
+                db.UserTypes.Remove(existingUserType);
+                db.Organizations.Remove(existingOrg);
+                db.People.Remove(existingUser);
                 db.SaveChanges();
             }
         }
@@ -571,6 +697,10 @@ namespace NewCustomerIntegration.DomainTests
                 db.Organizations.Remove(existingOrg);
                 db.Addresses.Remove(newAdd);
                 db.Addresses.Remove(existingAdd);
+                db.SiteTypes.Remove(newSiteType);
+                db.SiteTypes.Remove(existingSiteType);
+                db.Sites.Remove(existingSite);
+                db.Sites.Remove(newSite);
                 db.SaveChanges();
 
             }
@@ -583,19 +713,6 @@ namespace NewCustomerIntegration.DomainTests
             {
                 //Arrange
 
-                var existingSite = new Site();
-
-                existingSite.OrganizationId = 1234;
-                existingSite.SiteTypeId = 7;
-                existingSite.SiteName = "Little Island";
-                existingSite.SiteCode = "RWF001";
-                existingSite.TimeZoneId = 8;
-                existingSite.CreatedDateTime = new DateTime();
-                existingSite.CreatedBy = "Adminstrator";
-                existingSite.ModifiedDateTime = new DateTime();
-                existingSite.ModifiedBy = "Administrator";
-                db.Sites.Add(existingSite);
-
                 var existingSiteType = new SiteType();
 
                 existingSiteType.SiteTypeId = 7;
@@ -606,10 +723,53 @@ namespace NewCustomerIntegration.DomainTests
                 existingSiteType.ModifiedBy = "Administrator";
                 db.SiteTypes.Add(existingSiteType);
 
-                var newSite = new Site();
+                var existingOrg = new Organization();
 
-                newSite.OrganizationId = 4231;
-                newSite.SiteTypeId = 1;
+                existingOrg.OrganizationId = 15;
+                existingOrg.OrganizationCode = "RWF";
+                existingOrg.OrganizationName = "RealWorld Diners";
+                existingOrg.PhoneNumber = "208-555-1234";
+                existingOrg.FaxNumber = "208-555-3421";
+                existingOrg.ParentOrganizationCode = "4321";
+                existingOrg.Theme = "Custom";
+                existingOrg.Skin = "Green";
+                existingOrg.Active = true;
+                existingOrg.DELETED = false;
+                existingOrg.CreatedDateTime = new DateTime();
+                existingOrg.CreatedBy = "Administrator";
+                existingOrg.ModifiedDateTime = new DateTime();
+                existingOrg.ModifiedBy = "Administrator";
+                db.Organizations.Add(existingOrg);
+
+                var existingSite = new Site();
+
+                existingSite.SiteId = 5;
+                existingSite.OrganizationId = existingOrg.OrganizationId;
+                existingSite.SiteTypeId = existingSiteType.SiteTypeId;
+                existingSite.SiteName = "Little Island";
+                existingSite.SiteCode = "RWF001";
+                existingSite.TimeZoneId = 8;
+                existingSite.CreatedDateTime = new DateTime();
+                existingSite.CreatedBy = "Adminstrator";
+                existingSite.ModifiedDateTime = new DateTime();
+                existingSite.ModifiedBy = "Administrator";
+                db.Sites.Add(existingSite);
+
+
+                var newSiteType = new SiteType();
+
+                newSiteType.SiteTypeId = 1;
+                newSiteType.SiteTypeName = "Warehouse";
+                newSiteType.CreatedDateTime = new DateTime();
+                newSiteType.CreatedBy = "Administrator";
+                newSiteType.ModifiedDateTime = new DateTime();
+                newSiteType.ModifiedBy = "Administrator";
+                db.SiteTypes.Add(newSiteType);
+
+                var newSite = new Site();
+                newSite.SiteId = 6;
+                newSite.OrganizationId = existingOrg.OrganizationId;
+                newSite.SiteTypeId = newSiteType.SiteTypeId;
                 newSite.SiteName = "Big Island";
                 newSite.SiteCode = "BFW001";
                 newSite.TimeZoneId = 7;
@@ -619,15 +779,6 @@ namespace NewCustomerIntegration.DomainTests
                 newSite.ModifiedBy = "Administrator";
                 db.Sites.Add(newSite);
 
-                var newSiteType = new SiteType();
-
-                newSite.SiteTypeId = 1;
-                newSiteType.SiteTypeName = "Warehouse";
-                newSiteType.CreatedDateTime = new DateTime();
-                newSiteType.CreatedBy = "Administrator";
-                newSiteType.ModifiedDateTime = new DateTime();
-                newSiteType.ModifiedBy = "Administrator";
-                db.SiteTypes.Add(newSiteType);
 
                 //Act
                 db.SaveChanges();
