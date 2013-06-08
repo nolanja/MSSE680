@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewCustomerIntegration", "NewCustomerIntegration\NewCustomerIntegration.csproj", "{F8B63E07-D4B2-46A5-BF73-E838D21A27E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewCustomerIntegration.Tests", "NewCustomerIntegration.Tests\NewCustomerIntegration.Tests.csproj", "{F3D66907-B81D-4132-AF60-741668FECF18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewCustomerIntegration.Domain", "NewCustomerIntegration.Domain\NewCustomerIntegration.Domain\NewCustomerIntegration.Domain.csproj", "{D9020388-8CAB-4630-B2BA-B5AD1E75E2E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8B63E07-D4B2-46A5-BF73-E838D21A27E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8B63E07-D4B2-46A5-BF73-E838D21A27E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8B63E07-D4B2-46A5-BF73-E838D21A27E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8B63E07-D4B2-46A5-BF73-E838D21A27E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3D66907-B81D-4132-AF60-741668FECF18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D66907-B81D-4132-AF60-741668FECF18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D66907-B81D-4132-AF60-741668FECF18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D66907-B81D-4132-AF60-741668FECF18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9020388-8CAB-4630-B2BA-B5AD1E75E2E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9020388-8CAB-4630-B2BA-B5AD1E75E2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9020388-8CAB-4630-B2BA-B5AD1E75E2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9020388-8CAB-4630-B2BA-B5AD1E75E2E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+	EndGlobalSection
+EndGlobal
