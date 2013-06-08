@@ -5,18 +5,17 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewCustomerIntegration.Services;
 using NewCustomerIntegration.Domain.Models;
 
 
-namespace NewCustomerIntegration.Controllers.ServiceLayer
+namespace NewCustomerIntegration.Controllers
 {
     public class AddressController : Controller
     {
 
-        private DBIntegrationContext db = new DBIntegrationContext();
-
-        private INewCustomerService service;
-        public AddressController(INewCustomerService service)
+        private INewCustomerAddressService service;
+        public AddressController(INewCustomerAddressService service)
         {
             this.service = service;
         }
@@ -26,7 +25,7 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
 
         public ActionResult Index()
         {
-            var addresses = db.Addresses.Include(a => a.Site);
+            var addresses = this.service.GetAddresses();
             return View(addresses.ToList());
         }
 
@@ -35,7 +34,7 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
 
         public ActionResult Details(long id = 0)
         {
-            Address address = db.Addresses.Find(id);
+            var address = this.service.AddressDetails(id);
             if (address == null)
             {
                 return HttpNotFound();
@@ -48,7 +47,7 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
 
         public ActionResult Create()
         {
-            ViewBag.SiteId = new SelectList(db.Sites, "SiteId", "SiteName");
+            ViewBag.SiteId = this.service.AddressCreateSiteKey();
             return View();
         }
 
@@ -61,12 +60,11 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
         {
             if (ModelState.IsValid)
             {
-                db.Addresses.Add(address);
-                db.SaveChanges();
+                this.service.AddressCreate(address);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.SiteId = new SelectList(db.Sites, "SiteId", "SiteName", address.SiteId);
+            ViewBag.SiteId = this.service.AddressWriteSiteKey(address);
             return View(address);
         }
 
@@ -75,12 +73,12 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
 
         public ActionResult Edit(long id = 0)
         {
-            Address address = db.Addresses.Find(id);
+            Address address = this.service.AddressEdit(id);
             if (address == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.SiteId = new SelectList(db.Sites, "SiteId", "SiteName", address.SiteId);
+            ViewBag.SiteId = this.service.AddressWriteSiteKey(address);
             return View(address);
         }
 
@@ -93,11 +91,10 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
         {
             if (ModelState.IsValid)
             {
-                db.Entry(address).State = EntityState.Modified;
-                db.SaveChanges();
+                this.service.AddressEdit(address);
                 return RedirectToAction("Index");
             }
-            ViewBag.SiteId = new SelectList(db.Sites, "SiteId", "SiteName", address.SiteId);
+            ViewBag.SiteId = this.service.AddressWriteSiteKey(address);
             return View(address);
         }
 
@@ -106,7 +103,7 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
 
         public ActionResult Delete(long id = 0)
         {
-            Address address = db.Addresses.Find(id);
+            Address address = this.service.AddressDelete(id);
             if (address == null)
             {
                 return HttpNotFound();
@@ -121,15 +118,13 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Address address = db.Addresses.Find(id);
-            db.Addresses.Remove(address);
-            db.SaveChanges();
+            this.service.AddressDeleteConfirmed(id);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            this.service.AddressDispose(disposing);
             base.Dispose(disposing);
         }
     }

@@ -5,33 +5,38 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewCustomerIntegration.Services;
 using NewCustomerIntegration.Domain.Models;
 
-namespace NewCustomerIntegration.Controllers.ServiceLayer
+
+namespace NewCustomerIntegration.Controllers
 {
     public class OrganizationController : Controller
     {
-        private DBIntegrationContext db = new DBIntegrationContext();
 
-        private INewCustomerService service;
-        public OrganizationController(INewCustomerService service)
+        private INewCustomerOrganizationService service;
+        
+        public OrganizationController(INewCustomerOrganizationService service)
         {
+            
             this.service = service;
+            
         }
         //
         // GET: /Organization/
 
         public ActionResult Index()
         {
-            return View(db.Organizations.ToList());
+            // Create list of Organizations
+            return View(this.service.GetOrganizationNames());
         }
 
         //
         // GET: /Organization/Details/5
 
-        public ActionResult Details(long id = 0)
+        public ActionResult Details(long id)
         {
-            Organization organization = db.Organizations.Find(id);
+            var organization = this.service.OrganizationDetails(id);
             if (organization == null)
             {
                 return HttpNotFound();
@@ -56,8 +61,8 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
         {
             if (ModelState.IsValid)
             {
-                db.Organizations.Add(organization);
-                db.SaveChanges();
+                this.service.OrganizationCreate(organization);
+
                 return RedirectToAction("Index");
             }
 
@@ -67,9 +72,9 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
         //
         // GET: /Organization/Edit/5
 
-        public ActionResult Edit(long id = 0)
+        public ActionResult Edit(long id)
         {
-            Organization organization = db.Organizations.Find(id);
+            var organization = this.service.OrganizationEdit(id);
             if (organization == null)
             {
                 return HttpNotFound();
@@ -86,8 +91,8 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
         {
             if (ModelState.IsValid)
             {
-                db.Entry(organization).State = EntityState.Modified;
-                db.SaveChanges();
+                this.service.OrganizationEdit(organization);
+
                 return RedirectToAction("Index");
             }
             return View(organization);
@@ -98,7 +103,7 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
 
         public ActionResult Delete(long id = 0)
         {
-            Organization organization = db.Organizations.Find(id);
+            var organization = this.service.OrganizationDelete(id);
             if (organization == null)
             {
                 return HttpNotFound();
@@ -113,15 +118,13 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Organization organization = db.Organizations.Find(id);
-            db.Organizations.Remove(organization);
-            db.SaveChanges();
+            this.service.OrganizationDeleteConfirmed(id);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            this.service.OrganizationDispose(disposing);
             base.Dispose(disposing);
         }
     }

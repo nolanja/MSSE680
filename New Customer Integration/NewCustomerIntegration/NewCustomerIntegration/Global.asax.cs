@@ -6,6 +6,11 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Microsoft.Practices.Unity;
+using NewCustomerIntegration.App_Start;
+using NewCustomerIntegration.Services;
+using NewCustomerIntegration.Controllers;
+using NewCustomerIntegration.Factories;
 
 namespace NewCustomerIntegration
 {
@@ -21,6 +26,13 @@ namespace NewCustomerIntegration
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            var container = new UnityContainer();
+            container.RegisterType<INewCustomerOrganizationService, OrganizationService>();
+            container.RegisterType<IController, OrganizationController>("Organization");
+            container.RegisterType<INewCustomerAddressService, AddressService>();
+            container.RegisterType<IController, AddressController>("Address");
+            var factory = new UnityControllerFactory(container);
+            ControllerBuilder.Current.SetControllerFactory(factory);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
         }

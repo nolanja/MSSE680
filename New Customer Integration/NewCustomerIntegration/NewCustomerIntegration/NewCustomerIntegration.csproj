@@ -206,15 +206,17 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="BusinessLayer\Business.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ServiceLayer\AddressController.cs" />
-    <Compile Include="Controllers\ServiceLayer\INewCustomerService.cs" />
-    <Compile Include="Controllers\ServiceLayer\RulesController.cs" />
-    <Compile Include="Controllers\ServiceLayer\OrganizationController.cs" />
-    <Compile Include="Controllers\ServiceLayer\PersonController.cs" />
-    <Compile Include="Controllers\ServiceLayer\NewCustomerService.cs" />
-    <Compile Include="Controllers\ServiceLayer\SiteTypeController.cs" />
-    <Compile Include="Controllers\ServiceLayer\UserTypeController.cs" />
-    <Compile Include="Controllers\ServiceLayer\SiteController.cs" />
+    <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Factories\UnityControllerFactory.cs" />
+    <Compile Include="Services\AddressService.cs" />
+    <Compile Include="Services\INewCustomerService.cs" />
+    <Compile Include="Controllers\RulesController.cs" />
+    <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\PersonController.cs" />
+    <Compile Include="Services\OrganizationService.cs" />
+    <Compile Include="Controllers\SiteTypeController.cs" />
+    <Compile Include="Controllers\UserTypeController.cs" />
+    <Compile Include="Controllers\SiteController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -1,46 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using NewCustomerIntegration.Services;
 using NewCustomerIntegration.Domain.Models;
 
-namespace NewCustomerIntegration.Controllers.ServiceLayer
+namespace NewCustomerIntegration.Controllers
 {
-    public class SiteTypeController : Controller
+    public class RulesController : Controller
     {
         private DBIntegrationContext db = new DBIntegrationContext();
 
-        private INewCustomerService service;
-        public SiteTypeController(INewCustomerService service)
+        private INewCustomerOrganizationService service;
+        public RulesController(INewCustomerOrganizationService service)
         {
             this.service = service;
         }
+
         //
-        // GET: /SiteType/
+        // GET: /Rules/
 
         public ActionResult Index()
         {
-            return View(db.SiteTypes.ToList());
+            return View(db.Rules.ToList());
         }
 
         //
-        // GET: /SiteType/Details/5
+        // GET: /Rules/Details/5
 
         public ActionResult Details(long id = 0)
         {
-            SiteType sitetype = db.SiteTypes.Find(id);
-            if (sitetype == null)
+            NewCustomerIntegration.Domain.Models.Rule rule = db.Rules.Find(id);
+            if (rule == null)
             {
                 return HttpNotFound();
             }
-            return View(sitetype);
+            return View(rule);
         }
 
         //
-        // GET: /SiteType/Create
+        // GET: /Rules/Create
 
         public ActionResult Create()
         {
@@ -48,73 +46,73 @@ namespace NewCustomerIntegration.Controllers.ServiceLayer
         }
 
         //
-        // POST: /SiteType/Create
+        // POST: /Rules/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(SiteType sitetype)
+        public ActionResult Create(NewCustomerIntegration.Domain.Models.Rule rule)
         {
             if (ModelState.IsValid)
             {
-                db.SiteTypes.Add(sitetype);
+                db.Rules.Add(rule);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(sitetype);
+            return View(rule);
         }
 
         //
-        // GET: /SiteType/Edit/5
+        // GET: /Rules/Edit/5
 
         public ActionResult Edit(long id = 0)
         {
-            SiteType sitetype = db.SiteTypes.Find(id);
-            if (sitetype == null)
+            NewCustomerIntegration.Domain.Models.Rule rule = db.Rules.Find(id);
+            if (rule == null)
             {
                 return HttpNotFound();
             }
-            return View(sitetype);
+            return View(rule);
         }
 
         //
-        // POST: /SiteType/Edit/5
+        // POST: /Rules/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(SiteType sitetype)
+        public ActionResult Edit(NewCustomerIntegration.Domain.Models.Rule rule)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(sitetype).State = EntityState.Modified;
+                db.Entry(rule).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(sitetype);
+            return View(rule);
         }
 
         //
-        // GET: /SiteType/Delete/5
+        // GET: /Rules/Delete/5
 
         public ActionResult Delete(long id = 0)
         {
-            SiteType sitetype = db.SiteTypes.Find(id);
-            if (sitetype == null)
+            NewCustomerIntegration.Domain.Models.Rule rule = db.Rules.Find(id);
+            if (rule == null)
             {
                 return HttpNotFound();
             }
-            return View(sitetype);
+            return View(rule);
         }
 
         //
-        // POST: /SiteType/Delete/5
+        // POST: /Rules/Delete/5
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            SiteType sitetype = db.SiteTypes.Find(id);
-            db.SiteTypes.Remove(sitetype);
+            NewCustomerIntegration.Domain.Models.Rule rule = db.Rules.Find(id);
+            db.Rules.Remove(rule);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -5,16 +5,17 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewCustomerIntegration.Services;
 using NewCustomerIntegration.Domain.Models;
 
-namespace NewCustomerIntegration.Controllers.ServiceLayer
+namespace NewCustomerIntegration.Controllers
 {
     public class PersonController : Controller
     {
         private DBIntegrationContext db = new DBIntegrationContext();
 
-        private INewCustomerService service;
-        public PersonController(INewCustomerService service)
+        private INewCustomerOrganizationService service;
+        public PersonController(INewCustomerOrganizationService service)
         {
             this.service = service;
         }

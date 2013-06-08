@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using NewCustomerIntegration.Services;
 using NewCustomerIntegration.Domain.Models;
 
-namespace NewCustomerIntegration.Controllers.ServiceLayer
+namespace NewCustomerIntegration.Controllers
 {
     public class UserTypeController : Controller
     {
         private DBIntegrationContext db = new DBIntegrationContext();
 
-        private INewCustomerService service;
-        public UserTypeController(INewCustomerService service)
+        private INewCustomerOrganizationService service;
+        public UserTypeController(INewCustomerOrganizationService service)
         {
             this.service = service;
         }
